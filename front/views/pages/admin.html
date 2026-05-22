@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>admin AURUM — Hotel Reservations</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../styles/admin.css">
+</head>
+
+<body>
+
+    <div id="view-admin" class="view">
+        <!-- Navbar -->
+        <nav class="top-nav">
+            <div class="nav-logo">AURUM</div>
+            <div class="nav-links">
+                <button class="nav-link active">Dashboard</button>
+                <button class="nav-link">Habitaciones</button>
+                <button class="nav-link">Reportes</button>
+            </div>
+            <div class="nav-right">
+                <span class="nav-user"><span style="color:var(--gold)">Recepción</span> — Ana M.</span>
+                <button class="btn btn-ghost" style="padding:8px 16px; font-size:0.7rem;"
+                    onclick="showView('view-login')">Salir</button>
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+        <div class="admin-layout">
+            <aside class="admin-sidebar">
+                <div class="sidebar-section">
+                    <div class="sidebar-section-label">General</div>
+                    <button class="sidebar-item active"><span class="icon">📊</span> Dashboard</button>
+                    <button class="sidebar-item"><span class="icon">📅</span> Reservas</button>
+                    <button class="sidebar-item"><span class="icon">🏨</span> Habitaciones</button>
+                </div>
+                <div class="sidebar-section" style="margin-top:16px;">
+                    <div class="sidebar-section-label">Gestión</div>
+                    <button class="sidebar-item"><span class="icon">👤</span> Huéspedes</button>
+                    <button class="sidebar-item"><span class="icon">💰</span> Facturación</button>
+                    <button class="sidebar-item"><span class="icon">📋</span> Reportes</button>
+                </div>
+                <div class="sidebar-section" style="margin-top:16px;">
+                    <div class="sidebar-section-label">Sistema</div>
+                    <button class="sidebar-item"><span class="icon">⚙️</span> Configuración</button>
+                    <button class="sidebar-item"><span class="icon">🔌</span> BD Réplica</button>
+                </div>
+            </aside>
+
+            <main class="admin-main">
+                <div class="admin-header">
+                    <h1 class="admin-title display">Panel de Control</h1>
+                    <p class="admin-sub">Viernes, 16 de mayo 2025 · Temporada alta</p>
+                </div>
+
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <div class="kpi-label">Ocupación hoy</div>
+                        <div class="kpi-value display">87%</div>
+                        <div class="kpi-change up">↑ +5% vs ayer</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Reservas activas</div>
+                        <div class="kpi-value display">34</div>
+                        <div class="kpi-change up">↑ +3 hoy</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Ingresos del mes</div>
+                        <div class="kpi-value display">$128k</div>
+                        <div class="kpi-change up">↑ +12%</div>
+                    </div>
+                    <div class="kpi-card">
+                        <div class="kpi-label">Check-outs hoy</div>
+                        <div class="kpi-value display">7</div>
+                        <div class="kpi-change">Pendientes: 2</div>
+                    </div>
+                </div>
+
+                <div class="table-wrapper">
+                    <div class="table-toolbar">
+                        <h3 style="color:var(--text2); font-size:0.75rem; letter-spacing:0.14em;">RESERVAS RECIENTES</h3>
+                        <div style="display:flex; gap:12px; align-items:center;">
+                            <input class="table-search" placeholder="Buscar huésped o código...">
+                            <button class="btn btn-outline" style="padding:8px 16px; font-size:0.68rem;">+ Nueva reserva</button>
+                        </div>
+                    </div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Código</th>
+                                <th>Huésped</th>
+                                <th>Habitación</th>
+                                <th>Llegada</th>
+                                <th>Salida</th>
+                                <th>Estado</th>
+                                <th>Total</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td style="color:var(--gold); font-size:0.75rem;">#RES-0088</td>
+                                <td class="td-name">María González</td>
+                                <td>Suite Presidencial</td>
+                                <td>16 may</td>
+                                <td>19 may</td>
+                                <td><span class="badge badge-green">Activa</span></td>
+                                <td>$2,250</td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn">Ver</button>
+                                        <button class="action-btn danger">Cancelar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="color:var(--gold); font-size:0.75rem;">#RES-0087</td>
+                                <td class="td-name">Andrés Ruiz</td>
+                                <td>Junior Suite</td>
+                                <td>15 may</td>
+                                <td>18 may</td>
+                                <td><span class="badge badge-gold">En curso</span></td>
+                                <td>$1,260</td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn">Ver</button>
+                                        <button class="action-btn">Check-out</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="color:var(--gold); font-size:0.75rem;">#RES-0086</td>
+                                <td class="td-name">Sofía Martínez</td>
+                                <td>Hab. Deluxe</td>
+                                <td>14 may</td>
+                                <td>16 may</td>
+                                <td><span class="badge badge-gray">Completada</span></td>
+                                <td>$560</td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn">Ver</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="color:var(--gold); font-size:0.75rem;">#RES-0085</td>
+                                <td class="td-name">Pedro Salcedo</td>
+                                <td>Junior Suite</td>
+                                <td>17 may</td>
+                                <td>20 may</td>
+                                <td><span class="badge badge-green">Activa</span></td>
+                                <td>$1,260</td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn">Ver</button>
+                                        <button class="action-btn danger">Cancelar</button>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td style="color:var(--gold); font-size:0.75rem;">#RES-0084</td>
+                                <td class="td-name">Laura Vega</td>
+                                <td>Suite Montaña</td>
+                                <td>10 may</td>
+                                <td>15 may</td>
+                                <td><span class="badge badge-red">Cancelada</span></td>
+                                <td>$2,900</td>
+                                <td>
+                                    <div class="td-actions">
+                                        <button class="action-btn">Ver</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </main>
+        </div>
+    </div>
+
+</body>
+
+</html>

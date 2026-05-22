@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AURUM — Hotel Reservations</title>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/cliente.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/modalReservas.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/chatbox.css')}}">
+    <!-- <link rel="stylesheet" href="../styles/modalReservas.css">
+    <link rel="stylesheet" href="../styles/chatBox.css"> -->
+
+</head>
+
+<body onload="obtenerDatos()">
+
+    <div id="view-client" class="view">
+        <!-- Navbar -->
+        <nav class="top-nav">
+            <div class="nav-logo">AURUM</div>
+            <div class="nav-links">
+                <button class="nav-link active">Habitaciones</button>
+                <button class="nav-link">Mis Reservas</button>
+                <button class="nav-link">Servicios</button>
+            </div>
+            <div class="nav-right">
+                <span class="nav-user">Hola, <span style="color:var(--gold)">{{usuario}}</span></span>
+                <button class="btn btn-ghost" style="padding:8px 16px; font-size:0.7rem;"
+                    onclick="showView('view-login')"><a href="/logout">Salir</a></button>
+            </div>
+        </nav>
+        <!-- Navbar -->
+
+        <div class="hero-section">
+            <div class="hero-content">
+                <div class="hero-eyebrow">Reserva en línea</div>
+                <h1 class="hero-title display">Encuentre su<br><em style="color:var(--gold)">habitación ideal</em></h1>
+                <p class="hero-sub">Seleccione sus fechas y descubra nuestra colección de suites y habitaciones de lujo.
+                </p>
+            </div>
+        </div>
+
+        <div class="search-bar">
+            <div class="input-group">
+                <label class="input-label">Llegada</label>
+                <input type="date" class="input-field" id="modal-llegada">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Salida</label>
+                <input type="date" class="input-field" id="modal-salida">
+            </div>
+            <div class="input-group">
+                <label class="input-label">Tipo de habitación</label>
+                <select class="input-field">
+                    <option value="">Todas</option>
+                    <option>Suite Presidencial</option>
+                    <option>Junior Suite</option>
+                    <option>Habitación Deluxe</option>
+                    <option>Habitación Estándar</option>
+                </select>
+            </div>
+            <div class="input-group">
+                <label class="input-label">Huéspedes</label>
+                <select class="input-field" style="width:100px;">
+                    <option>1</option>
+                    <option>2</option>
+                    <option>3</option>
+                    <option>4</option>
+                </select>
+            </div>
+            <button class="btn btn-gold" onclick="searchRooms()" style="height:46px;">Buscar</button>
+        </div>
+
+        <div class="section">
+            <div class="section-header">
+                <h2 class="section-title display">Disponibilidad</h2>
+                <span class="section-count">4 habitaciones encontradas</span>
+            </div>
+
+            <!-- Inicio madal -->
+            <div class="modal-overlay" id="reserva-modal">
+                <div class="modal">
+                    <button class="modal-close" onclick="closeModal()">✕</button>
+                    <h2 class="modal-title display" id="modal-room-name"></h2>
+                    <p class="modal-sub">Complete los datos para confirmar su reserva</p>
+
+                    <div class="modal-grid">
+
+                        <div class="input-group">
+                            <label class="input-label">Correo</label>
+                            <input class="input-field" type="email" placeholder="correo@ejemplo.com">
+                        </div>
+                        <!-- <div class="input-group">
+                                <label class="input-label">Fecha de llegada</label>
+                                <input class="input-field" type="date" id="modal-llegada">
+                            </div> -->
+                        <!-- <div class="input-group">
+                                <label class="input-label">Fecha de salida</label>
+                                <input class="input-field" type="date" id="modal-salida">
+                            </div> -->
+                        <div class="input-group">
+                            <label class="input-label">Documento de identidad</label>
+                            <input class="input-field" placeholder="1234567890">
+                        </div>
+                        <div class="input-group">
+                            <label class="input-label">Teléfono</label>
+                            <input class="input-field" placeholder="+57 300 000 0000">
+                        </div>
+                        <div class="input-group full">
+                            <label class="input-label">Solicitudes especiales</label>
+                            <input class="input-field" placeholder="Ej: cama adicional, llegada tardía...">
+                        </div>
+                    </div>
+
+                    <hr class="modal-divider">
+
+                    <div class="modal-summary">
+                        <div class="modal-summary-row">
+                            <span>Habitación</span>
+                            <span id="summary-room">Suite Presidencial</span>
+                        </div>
+                        <div class="modal-summary-row">
+                            <span>Noches</span>
+                            <span id="summary-nights">3 noches</span>
+                        </div>
+                        <div class="modal-summary-row">
+                            <span>Tarifa por noche</span>
+                            <span id="summary-rate">$750</span>
+                        </div>
+                        <div class="modal-summary-row total">
+                            <span>Total estimado</span>
+                            <span id="summary-total">$2,250</span>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-gold w-full" onclick="confirmarReserva()">Confirmar Reserva</button>
+                    <p style="text-align:center; font-size:0.7rem; color:var(--text3); margin-top:12px;">
+                        Al confirmar acepta los términos y condiciones de AURUM Hotels
+                    </p>
+                </div>
+            </div>
+            <!-- Fin modal -->
+             
+            <!-- INICIO CHATBOT WIDGET -->
+            <button class="chatbot-toggle" id="chat-toggle" title="Asistente virtual">
+                <span id="chat-icon">💬</span>
+            </button>
+
+            <div class="chatbot-window" id="chatbot-window">
+                <div class="chat-header">
+                    <div class="chat-avatar">✦</div>
+                    <div class="chat-header-info">
+                        <div class="chat-header-name">Aria — Asistente AURUM</div>
+                        <div class="chat-header-status">En línea ahora</div>
+                    </div>
+                    <button onclick="toggleChat()"
+                        style="background:none;border:none;color:var(--text3);cursor:pointer;font-size:0.8rem;">✕</button>
+                </div>
+
+                <div class="chat-messages" id="chat-messages">
+                    <div class="msg bot">
+                        <div class="chat-avatar" style="width:28px;height:28px;font-size:0.7rem;flex-shrink:0;">✦
+                        </div>
+                        <div>
+                            <div class="msg-bubble">Bienvenido a AURUM Hotels. Soy Aria, su asistente personal. ¿En
+                                qué puedo
+                                ayudarle hoy?</div>
+                            <div class="msg-time">Ahora</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="chat-suggestions" id="chat-suggestions">
+                    <button class="suggestion-chip" onclick="sendSuggestion(this)">Ver disponibilidad</button>
+                    <button class="suggestion-chip" onclick="sendSuggestion(this)">Hacer una reserva</button>
+                    <button class="suggestion-chip" onclick="sendSuggestion(this)">Mis reservas</button>
+                    <button class="suggestion-chip" onclick="sendSuggestion(this)">Cancelar reserva</button>
+                </div>
+
+                <div class="chat-input-area">
+                    <textarea class="chat-input" id="chat-input" placeholder="Escribe tu mensaje..." rows="1"
+                        onkeydown="if(event.key==='Enter'&&!event.shiftKey){event.preventDefault();sendMessage();}"></textarea>
+                    <button class="chat-send" onclick="sendMessage()">➤</button>
+                </div>
+            </div>
+            <!-- FIN CHATBOT WIDGET -->
+
+            <div class="rooms-grid">
+                <!-- Room Card -->
+
+
+                <!-- <div class="room-card" onclick="openReservaModal('Junior Suite','420')">
+                    <div class="room-img" style="background:linear-gradient(135deg,#121a18 0%,#1e2820 100%);">
+                        <span class="room-img-icon">🌿</span>
+                        <div class="room-img-badge"><span class="badge badge-green">Disponible</span></div>
+                    </div>
+                    <div class="room-body">
+                        <div class="room-type">Piso 8 · Vista Jardín</div>
+                        <div class="room-name display">Junior Suite</div>
+                        <div class="room-desc">Espaciosa suite con sala de estar integrada y baño de mármol con ducha de
+                            vapor.</div>
+                        <div class="room-features">
+                            <span class="room-feature">🛏 Queen</span>
+                            <span class="room-feature">🚿 Ducha vapor</span>
+                            <span class="room-feature">🌳 Vista jardín</span>
+                        </div>
+                        <div class="room-footer">
+                            <div class="room-price">
+                                <div class="room-price-num display">$420</div>
+                                <div class="room-price-label">por noche</div>
+                            </div>
+                            <button class="btn btn-gold" style="padding:10px 20px; font-size:0.7rem;">Reservar</button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <!-- <div class="room-card" onclick="openReservaModal('Habitación Deluxe','280')">
+                    <div class="room-img" style="background:linear-gradient(135deg,#15121a 0%,#221820 100%);">
+                        <span class="room-img-icon">✨</span>
+                        <div class="room-img-badge"><span class="badge badge-green">Disponible</span></div>
+                    </div>
+                    <div class="room-body">
+                        <div class="room-type">Piso 5 · Estándar Superior</div>
+                        <div class="room-name display">Habitación Deluxe</div>
+                        <div class="room-desc">Elegante habitación con escritorio ejecutivo, minibar y amenities de
+                            primera.</div>
+                        <div class="room-features">
+                            <span class="room-feature">🛏 King</span>
+                            <span class="room-feature">🍸 Minibar</span>
+                            <span class="room-feature">💼 Escritorio</span>
+                        </div>
+                        <div class="room-footer">
+                            <div class="room-price">
+                                <div class="room-price-num display">$280</div>
+                                <div class="room-price-label">por noche</div>
+                            </div>
+                            <button class="btn btn-gold" style="padding:10px 20px; font-size:0.7rem;">Reservar</button>
+                        </div>
+                    </div>
+                </div> -->
+
+                <div class="room-card" style="opacity:0.6; pointer-events:none;">
+                    <div class="room-img" style="background:linear-gradient(135deg,#111010 0%,#1a1818 100%);">
+                        <span class="room-img-icon">🏔</span>
+                        <div class="room-img-badge"><span class="badge badge-red">Ocupada</span></div>
+                    </div>
+                    <div class="room-body">
+                        <div class="room-type">Piso 10 · Vista Montaña</div>
+                        <div class="room-name display">Suite Montaña</div>
+                        <div class="room-desc">Disponible próximamente. Esta suite ofrece vistas inigualables a la
+                            cordillera.</div>
+                        <div class="room-features">
+                            <span class="room-feature">🛏 King</span>
+                            <span class="room-feature">🏔 Vista montaña</span>
+                        </div>
+                        <div class="room-footer">
+                            <div class="room-price">
+                                <div class="room-price-num display">$580</div>
+                                <div class="room-price-label">por noche</div>
+                            </div>
+                            <button class="btn btn-ghost" style="padding:10px 20px; font-size:0.7rem;" disabled>No
+                                disponible</button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    <script src="{{url_for('static', filename= 'js/cliente.js')}}"></script>
+    <script src="{{url_for('static', filename= 'js/chatbox.js')}}"></script>
+
+</body>
+
+</html>
