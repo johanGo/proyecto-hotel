@@ -7,7 +7,7 @@ app.secret_key = "clave_super_secreta"
 
 
 # conexión 
-conexion = pymysql.connect( host="localhost", user="root", password="", database="hotel" )
+conexion = pymysql.connect( host="localhost", user="root", password="root", database="proyectochatbot" )
 
 @app.route('/')
 def raiz():
@@ -16,13 +16,13 @@ def raiz():
 @app.route('/login', methods=['POST'])
 def login():
 
-    correo = request.form['correo']
-    contrasena = request.form['contrasena']
+    email = request.form['correo']
+    contraseña = request.form['contrasena']
 
     cursor = conexion.cursor()
 
-    sql = "SELECT primerNombre, rol FROM usuarios WHERE correo=%s AND contrasena=%s"
-    cursor.execute(sql, (correo, contrasena))
+    sql = "SELECT nombre, rol FROM cliente WHERE email=%s AND contraseña=%s"
+    cursor.execute(sql, (email, contraseña))
 
     resultado = cursor.fetchone()
 
@@ -35,7 +35,7 @@ def login():
         rol = resultado[1]
 
         session['usuario']=usuario
-        session['correo'] = correo
+        session['correo'] = email
         session['rol'] = rol
 
         if rol == "admin":
@@ -48,8 +48,8 @@ def login():
         return "Correo o contraseña incorrectos"
     
 @app.route('/admin')
-# def admin():
-#     return render_template('admin.html')
+def admin():
+    return render_template('admin.html')
 def admin():
 
     # verificar sesión
