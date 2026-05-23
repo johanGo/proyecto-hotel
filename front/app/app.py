@@ -6,7 +6,7 @@ app = Flask(__name__)
 app.secret_key = "clave_super_secreta"
 
 
-# conexión 
+# conexiónn
 conexion = pymysql.connect( host="localhost", user="root", password="root", database="proyectochatbot" )
 
 @app.route('/')
